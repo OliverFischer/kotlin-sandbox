@@ -14,7 +14,7 @@ import java.util.Map;
 public class Sandbox {
 
     public static void main(String[] args) {
-        List<Section> animalsBySection = mapAnimalsByName();
+        List<Section> animalsBySection = mapAnimalsByName(Animals.list());
         System.out.println(animalsBySection);
     }
 
@@ -22,8 +22,8 @@ public class Sandbox {
      * Take a list of animals and output a list of
      * sections containing the animals keyed by name
      */
-    private static List<Section> mapAnimalsByName() {
-        return Observable.from(Animals.list())
+    private static List<Section> mapAnimalsByName(List<Animal> animals) {
+        return Observable.from(animals)
                 .toMultimap(new Func1<Animal, String>() {
                     @Override
                     public String call(Animal animal) {

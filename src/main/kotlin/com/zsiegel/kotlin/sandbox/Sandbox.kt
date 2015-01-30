@@ -12,7 +12,7 @@ import com.zsiegel.java.sandbox.Animal
 fun main(args: Array<String>) {
     
     //Standard function call
-    var animalsBySection = mapAnimalsByName();
+    var animalsBySection = mapAnimalsByName(Animals.list());
     
     //Extension function tacked on to any instance of List<Animal>
     //var animalsBySection = Animals.list().mapByName();
