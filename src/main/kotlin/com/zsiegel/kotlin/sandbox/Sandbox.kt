@@ -24,19 +24,19 @@ fun main(args: Array<String>) {
  * An extension method available on any instance of List<Animal>
  */
 fun List<Animal>.mapByName() : List<Section> {
-    return mapAnimalsByName();
+    return mapAnimalsByName(this);
 }
 
 /**
  * Take a list of animals and output a list of
  * sections containing the animals keyed by name
  */
-fun mapAnimalsByName() : List<Section> {
-    return Observable.from(Animals.list())
+fun mapAnimalsByName(animals : List<Animal>) : List<Section> {
+    return Observable.from(animals)
             .toMultimap { animal ->
                 animal.name.substring(0, 1);
             }.flatMap { mapOfAnimals ->
-        
+
                 val sections = ArrayList<Section>();
                 for (sectionTitle in mapOfAnimals.keySet()) {
                     val section = Section()
