@@ -1,7 +1,9 @@
 package com.zsiegel.java.sandbox;
 
 import rx.Observable;
+import rx.Subscriber;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,6 +18,24 @@ public class Sandbox {
     public static void main(String[] args) {
         List<Section> animalsBySection = mapAnimalsByName(Animals.list());
         System.out.println(animalsBySection);
+        
+        //This wont compile on 7 - but will compile on 8
+        Observable.from(Animals.list()).compose(applySchedulers()).subscribe(new Subscriber<Animal>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onNext(Animal animal) {
+
+            }
+        });
     }
 
     /**
@@ -44,5 +64,15 @@ public class Sandbox {
                         return Observable.just(sections);
                     }
                 }).toBlocking().first();
+    }
+
+    private static <T> Observable.Transformer<T, T> applySchedulers() {
+        return new Observable.Transformer<T, T>() {
+            @Override
+            public Observable<T> call(Observable<T> observable) {
+                return observable.subscribeOn(Schedulers.io())
+                        .observeOn(Schedulers.immediate());
+            }
+        };
     }
 }
